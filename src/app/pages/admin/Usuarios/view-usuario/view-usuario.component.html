@@ -1,0 +1,96 @@
+
+<mat-card>
+
+  <mat-card-header>
+
+
+    <div class = "container-fluid">
+      <div class = "row">
+        <div class = "col-md-11">
+          <mat-card-title>Usuarios</mat-card-title>
+          <mat-card-subtitle>Lista de usuario</mat-card-subtitle>
+        </div>
+
+        <div class = "col-md-1">
+          <mat-icon
+            (click)="exporter.exportTable('xlsx', {fileName:'test', sheet: 'sheet_name', Props: {Author: 'Talha'}})" >
+            <span class="material-symbols-outlined">cloud_download</span>
+          </mat-icon>
+        </div>
+      </div>
+
+    </div>
+
+  </mat-card-header>
+  <mat-card-content>
+
+    <p>En esta sección se listan todos los usuario registrados en el sistema.</p>
+
+  </mat-card-content>
+  <br>
+
+  <table matTableExporter mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)" #exporter="matTableExporter"
+         class="mat-elevation-z8">
+
+    <!-- Position Column -->
+    <ng-container matColumnDef="run">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by run">
+        Run
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.run}} </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="nombre">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by nombre">
+        Nombre
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.nombreusuario}} </td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by email">
+        Email
+      </th>
+      <td mat-cell *matCellDef="let element"> {{element.correoelectronico}} </td>
+    </ng-container>
+
+
+
+    <ng-container matColumnDef="enabled">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by enabled">
+        Estado
+      </th>
+      <td mat-cell *matCellDef="let element"> <a  *ngIf="element.enabled">Activo</a><a  *ngIf="!element.enabled" >Inactivo</a></td>
+    </ng-container>
+
+    <ng-container matColumnDef="authorities">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Sort by authorities">
+        authorities
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngFor="let authority of element.authorities">{{authority.authority}} </span>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acciones">
+      <th mat-header-cell *matHeaderCellDef >
+        Acciones
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-icon  [routerLink]="'/admin/edit-usuario/'+element.id_usuario">edit</mat-icon>
+        <mat-icon  (click)="eliminarusuario(element.id_usuario)" >delete</mat-icon>
+      </td>
+    </ng-container>
+
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div class="container text-center mt20 mb20">
+    <button routerLink="/admin/add-usuario" mat-raised-button color="primary">Agregar usuario</button>
+  </div>
+</mat-card>
+
